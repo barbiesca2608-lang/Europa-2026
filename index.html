@@ -1,0 +1,2061 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Europa 2026 · Barbi, Ale & Thai</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F5F0E8;
+    --ink: #1A1614;
+    --terracotta: #C4623A;
+    --gold: #D4A843;
+    --sage: #7A9E87;
+    --navy: #2C3E5D;
+    --blush: #E8C4B0;
+    --light-sage: #E8F0EB;
+    --muted: #8A7F74;
+    --border: #DDD5C8;
+    --white: #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .hero {
+    background: var(--navy);
+    color: var(--cream);
+    padding: 48px 32px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,168,67,0.2) 0%, transparent 70%);
+  }
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .hero h1 em {
+    color: var(--gold);
+    font-style: italic;
+  }
+  .hero-sub {
+    font-size: 14px;
+    color: rgba(245,240,232,0.6);
+    margin-bottom: 24px;
+    font-weight: 300;
+  }
+  .travelers {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .traveler-badge {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .wedding-badge {
+    background: rgba(196,98,58,0.3);
+    border: 1px solid var(--terracotta);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--blush);
+  }
+
+  /* TABS */
+  .tab-nav {
+    background: var(--white);
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex: 1;
+    min-width: 160px;
+    padding: 18px 20px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .tab-btn .tab-icon { font-size: 18px; display: block; margin-bottom: 4px; }
+  .tab-btn.active { color: var(--terracotta); border-bottom-color: var(--terracotta); }
+  .tab-btn:hover:not(.active) { color: var(--ink); background: var(--cream); }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ITINERARY LAYOUT */
+  .itinerary-container { max-width: 960px; margin: 0 auto; padding: 32px 20px; }
+
+  /* CONFIG PANEL */
+  .config-panel {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 28px;
+  }
+  .config-panel h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    margin-bottom: 16px;
+    color: var(--ink);
+  }
+  .config-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  .config-field label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .config-field input, .config-field select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    background: var(--cream);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .config-field input:focus, .config-field select:focus { border-color: var(--terracotta); }
+
+  /* TIMELINE */
+  .timeline { position: relative; }
+  .timeline-line {
+    position: absolute;
+    left: 28px;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--gold), var(--terracotta), var(--sage));
+    border-radius: 2px;
+  }
+
+  .segment { display: flex; gap: 20px; margin-bottom: 8px; position: relative; }
+  .segment-dot {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+    z-index: 1;
+    border: 3px solid var(--white);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .segment-dot:hover { transform: scale(1.1); }
+
+  .segment-card {
+    flex: 1;
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    transition: box-shadow 0.2s;
+  }
+  .segment-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+
+  .segment-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    cursor: pointer;
+    gap: 12px;
+  }
+  .segment-title-block { flex: 1; }
+  .segment-country {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+  .segment-city {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .segment-dates {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+    font-weight: 400;
+  }
+  .segment-nights {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .segment-nights .n { font-size: 22px; font-weight: 700; color: var(--terracotta); line-height: 1; }
+  .segment-nights .label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+
+  .segment-body {
+    border-top: 1px solid var(--border);
+    padding: 16px 20px;
+    display: none;
+  }
+  .segment-body.open { display: block; }
+
+  .spots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .spot-tag {
+    background: var(--light-sage);
+    border: 1px solid #C8DDD0;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 12px;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* COST SECTION */
+  .cost-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--border);
+  }
+  .cost-row:last-child { border-bottom: none; }
+  .cost-label { flex: 1; font-size: 14px; }
+  .cost-input {
+    width: 110px;
+    padding: 7px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    text-align: right;
+    background: var(--cream);
+    color: var(--ink);
+    outline: none;
+  }
+  .cost-input:focus { border-color: var(--gold); }
+  .cost-currency {
+    font-size: 12px;
+    color: var(--muted);
+    width: 30px;
+  }
+
+  /* COST SUMMARY */
+  .cost-summary {
+    background: var(--navy);
+    color: var(--cream);
+    border-radius: 16px;
+    padding: 24px;
+    margin-top: 24px;
+  }
+  .cost-summary h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    margin-bottom: 16px;
+    color: var(--gold);
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .summary-item { text-align: center; }
+  .summary-item .val { font-size: 26px; font-weight: 700; color: var(--gold); font-family: 'DM Mono', monospace; }
+  .summary-item .lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(245,240,232,0.6); margin-top: 4px; }
+
+  /* TRANSPORT */
+  .transport-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(212,168,67,0.15);
+    border: 1px solid rgba(212,168,67,0.4);
+    border-radius: 100px;
+    padding: 4px 12px;
+    font-size: 12px;
+    color: var(--ink);
+    margin: 3px;
+  }
+
+  /* WEDDING HIGHLIGHT */
+  .wedding-card {
+    background: linear-gradient(135deg, #2C3E5D 0%, #1A2840 100%);
+    color: var(--cream);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 4px 0 12px;
+    border: 1.5px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+  .wedding-card::after {
+    content: '💒';
+    position: absolute;
+    right: 20px; top: 50%; transform: translateY(-50%);
+    font-size: 48px;
+    opacity: 0.2;
+  }
+  .wedding-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .wedding-card p { font-size: 14px; opacity: 0.8; }
+
+  /* CRUISE */
+  .cruise-card {
+    background: linear-gradient(135deg, #1A4A5A 0%, #0D2D38 100%);
+    color: var(--cream);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 4px 0 12px;
+    border: 1.5px solid var(--sage);
+    position: relative;
+    overflow: hidden;
+  }
+  .cruise-card::after {
+    content: '🚢';
+    position: absolute;
+    right: 20px; top: 50%; transform: translateY(-50%);
+    font-size: 48px;
+    opacity: 0.2;
+  }
+  .cruise-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: #7ECFBA;
+    margin-bottom: 6px;
+  }
+
+  /* SECTION DIVIDERS */
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 24px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* EXPENSE SPLITTER */
+  .expense-container { max-width: 960px; margin: 0 auto; padding: 32px 20px; }
+
+  .expense-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .expense-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+  }
+
+  .add-expense-btn {
+    background: var(--terracotta);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 22px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .add-expense-btn:hover { background: #A84F2E; }
+
+  /* ADD FORM */
+  .add-form {
+    background: var(--white);
+    border: 2px solid var(--terracotta);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+    display: none;
+  }
+  .add-form.open { display: block; }
+  .form-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+
+  .form-field label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .form-field input, .form-field select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    background: var(--cream);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-field input:focus, .form-field select:focus { border-color: var(--terracotta); }
+
+  .payers-grid {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .payer-toggle {
+    flex: 1;
+    min-width: 80px;
+    padding: 10px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 13px;
+    font-weight: 500;
+    background: transparent;
+  }
+  .payer-toggle.selected { background: var(--light-sage); border-color: var(--sage); }
+  .payer-toggle[data-name="Barbi"].selected { background: rgba(196,98,58,0.1); border-color: var(--terracotta); }
+  .payer-toggle[data-name="Ale"].selected { background: rgba(212,168,67,0.15); border-color: var(--gold); }
+  .payer-toggle[data-name="Thai"].selected { background: rgba(122,158,135,0.2); border-color: var(--sage); }
+
+  .form-actions { display: flex; gap: 10px; }
+  .btn-save {
+    background: var(--terracotta);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 11px 22px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn-cancel {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 11px 22px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    color: var(--muted);
+  }
+
+  /* EXPENSE TABLE */
+  .expense-table-wrap { overflow-x: auto; }
+  .expense-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .expense-table th {
+    text-align: left;
+    padding: 12px 14px;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 2px solid var(--border);
+    background: var(--white);
+    font-weight: 600;
+  }
+  .expense-table td {
+    padding: 13px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .expense-table tr:hover td { background: rgba(245,240,232,0.6); }
+  .expense-table tr:last-child td { border-bottom: none; }
+
+  .cat-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .cat-alojamiento { background: rgba(44,62,93,0.12); color: var(--navy); }
+  .cat-transporte { background: rgba(212,168,67,0.2); color: #8A6A1A; }
+  .cat-comida { background: rgba(196,98,58,0.15); color: #8A3A18; }
+  .cat-actividad { background: rgba(122,158,135,0.2); color: #3D6E55; }
+  .cat-otro { background: rgba(138,127,116,0.15); color: var(--muted); }
+  .cat-crucero { background: rgba(26,74,90,0.15); color: #1A4A5A; }
+
+  .payer-chip {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    margin: 1px;
+  }
+  .chip-Barbi { background: rgba(196,98,58,0.15); color: var(--terracotta); }
+  .chip-Ale { background: rgba(212,168,67,0.2); color: #8A6A1A; }
+  .chip-Thai { background: rgba(122,158,135,0.2); color: #3D6E55; }
+
+  .del-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--border);
+    font-size: 16px;
+    padding: 4px;
+    transition: color 0.2s;
+    border-radius: 6px;
+  }
+  .del-btn:hover { color: #cc4444; background: rgba(204,68,68,0.1); }
+
+  /* BALANCE CARDS */
+  .balance-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+    margin-top: 28px;
+  }
+  .balance-card {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+  }
+  .balance-card .person { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .balance-card .paid { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+  .balance-total {
+    font-family: 'DM Mono', monospace;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .balance-total.positive { color: #3D8C5A; }
+  .balance-total.negative { color: #CC4444; }
+  .balance-label { font-size: 11px; color: var(--muted); margin-top: 6px; }
+
+  .settlements {
+    background: var(--navy);
+    color: var(--cream);
+    border-radius: 16px;
+    padding: 24px;
+    margin-top: 20px;
+  }
+  .settlements h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .settlement-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-size: 14px;
+  }
+  .settlement-row:last-child { border-bottom: none; }
+  .arrow { color: var(--gold); font-size: 20px; }
+  .settlement-amount { font-family: 'DM Mono', monospace; font-weight: 700; color: var(--gold); }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center;
+    padding: 48px;
+    color: var(--muted);
+  }
+  .empty-state .icon { font-size: 48px; margin-bottom: 16px; }
+  .empty-state p { font-size: 14px; }
+
+  /* NOTES */
+  .notes-area {
+    width: 100%;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 80px;
+    background: var(--cream);
+    color: var(--ink);
+    outline: none;
+    margin-top: 8px;
+  }
+  .notes-area:focus { border-color: var(--sage); }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    .segment-header { flex-wrap: wrap; }
+    .form-grid { grid-template-columns: 1fr; }
+    .timeline-line { left: 24px; }
+    .segment-dot { width: 48px; height: 48px; font-size: 18px; }
+  }
+
+  /* PRINT */
+  @media print {
+    .tab-nav { display: none; }
+    .tab-panel { display: block !important; page-break-before: always; }
+    .add-expense-btn, .add-form { display: none !important; }
+  }
+
+  /* TOGGLE CHEVRON */
+  .chevron {
+    color: var(--muted);
+    font-size: 14px;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .chevron.open { transform: rotate(180deg); }
+
+  /* FLAG EMOJI */
+  .flag { font-size: 20px; }
+
+  /* COUNTRY COLORS */
+  .country-es .segment-dot { background: #C60B1E; }
+  .country-fr .segment-dot { background: #003189; }
+  .country-it .segment-dot { background: #009246; }
+  .country-pt .segment-dot { background: #006600; }
+  .country-cruise .segment-dot { background: #1A4A5A; }
+  .country-es .segment-country { color: #C60B1E; }
+  .country-fr .segment-country { color: #003189; }
+  .country-it .segment-country { color: #009246; }
+  .country-pt .segment-country { color: #006600; }
+  .country-cruise .segment-country { color: #1A4A5A; }
+
+  /* TOTAL COST BAR */
+  .trip-summary-bar {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+  }
+  .tsb-item { text-align: center; }
+  .tsb-val { font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 700; color: var(--terracotta); }
+  .tsb-lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-top: 2px; }
+
+  .toggle-all-btn {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+  .toggle-all-btn:hover { border-color: var(--terracotta); color: var(--terracotta); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">✈ Agosto — Septiembre 2026</div>
+  <h1>Europa <em>2026</em></h1>
+  <div class="hero-sub">22 días · Boda en Lisboa · Mediterráneo</div>
+  <div class="travelers">
+    <span class="traveler-badge">👩🏻‍🦱 Barbi</span>
+    <span class="traveler-badge">👩🏼 Ale</span>
+    <span class="traveler-badge">👩🏽 Thai</span>
+    <span class="wedding-badge">💒 Boda 12 Sep · Lisboa</span>
+  </div>
+</div>
+
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('with-cruise')">
+    <span class="tab-icon">🚢</span>
+    Con Crucero
+  </button>
+  <button class="tab-btn" onclick="switchTab('no-cruise')">
+    <span class="tab-icon">🗺️</span>
+    Sin Crucero
+  </button>
+  <button class="tab-btn" onclick="switchTab('max-countries')">
+    <span class="tab-icon">🌍</span>
+    Máx Destinos
+  </button>
+  <button class="tab-btn" onclick="switchTab('expenses')">
+    <span class="tab-icon">💰</span>
+    Gastos / Split
+  </button>
+</div>
+
+<!-- ================================================ TAB 1: CON CRUCERO ================================================ -->
+<div id="tab-with-cruise" class="tab-panel active">
+  <div class="itinerary-container">
+
+    <div class="trip-summary-bar">
+      <div class="tsb-item">
+        <div class="tsb-val">22</div>
+        <div class="tsb-lbl">Noches totales</div>
+      </div>
+      <div class="tsb-item">
+        <div class="tsb-val">4</div>
+        <div class="tsb-lbl">Países</div>
+      </div>
+      <div class="tsb-item">
+        <div class="tsb-val">7</div>
+        <div class="tsb-lbl">Noches crucero</div>
+      </div>
+      <div class="tsb-item">
+        <div class="tsb-val" id="wc-total-cost">$0</div>
+        <div class="tsb-lbl">Costo estimado pp</div>
+      </div>
+      <button class="toggle-all-btn" onclick="toggleAll('wc')">Expandir todo ▾</button>
+    </div>
+
+    <div class="config-panel">
+      <h3>⚙️ Ajustar fechas de inicio</h3>
+      <div class="config-grid">
+        <div class="config-field">
+          <label>Fecha de salida</label>
+          <input type="date" id="wc-start-date" value="2026-08-30" onchange="updateDatesWC()">
+        </div>
+        <div class="config-field">
+          <label>Moneda de referencia</label>
+          <select id="wc-currency">
+            <option value="USD">USD $</option>
+            <option value="EUR">EUR €</option>
+          </select>
+        </div>
+        <div class="config-field">
+          <label>N° de viajeras</label>
+          <select id="wc-travelers">
+            <option value="3" selected>3 (Barbi, Ale, Thai)</option>
+            <option value="2">2</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Itinerario día a día</div>
+
+    <div class="timeline" id="wc-timeline">
+      <!-- MADRID -->
+      <div class="segment country-es" id="wc-seg-madrid">
+        <div class="segment-dot" onclick="toggleSegment('wc-body-madrid')" title="Madrid">🇪🇸</div>
+        <div class="segment-card">
+          <div class="segment-header" onclick="toggleSegment('wc-body-madrid')">
+            <div class="segment-title-block">
+              <div class="segment-country">España</div>
+              <div class="segment-city">Madrid</div>
+              <div class="segment-dates" id="wc-dates-madrid">30 Ago — 2 Sep</div>
+            </div>
+            <div class="segment-nights"><div class="n">3</div><div class="label">noches</div></div>
+            <span class="chevron" id="wc-chev-madrid">▼</span>
+          </div>
+          <div class="segment-body" id="wc-body-madrid">
+            <div style="margin-bottom:14px">
+              <strong style="font-size:13px">🏛️ Lugares imperdibles</strong>
+              <div class="spots-grid">
+                <span class="spot-tag">🎨 Museo del Prado</span>
+                <span class="spot-tag">☀️ Parque del Retiro</span>
+                <span class="spot-tag">🏰 Palacio Real</span>
+                <span class="spot-tag">🍷 Mercado de San Miguel</span>
+                <span class="spot-tag">🌃 Gran Vía de noche</span>
+                <span class="spot-tag">🖼️ Reina Sofía</span>
+              </div>
+            </div>
+            <div style="margin-bottom:14px">
+              <strong style="font-size:13px">✈️ Transporte</strong><br>
+              <span class="transport-pill">✈️ Vuelo Caracas → Madrid</span>
+              <span class="transport-pill">🚇 Metro al hotel</span>
+            </div>
+            <div class="cost-row">
+              <span class="cost-label">🏨 Alojamiento (3 noches)</span>
+              <input class="cost-input" type="number" placeholder="0" id="wc-cost-madrid-hotel" oninput="calcTotal('wc')"> <span class="cost-currency">USD</span>
+            </div>
+            <div class="cost-row">
+              <span class="cost-label">✈️ Vuelo (pp)</span>
+              <input class="cost-input" type="number" placeholder="0" id="wc-cost-madrid-flight" oninput="calcTotal('wc')"> <span class="cost-currency">USD</span>
+            </div>
+            <div class="cost-row">
+              <span class="cost-label">🍽️ Comidas estimadas</span>
+              <input class="cost-input" type="number" placeholder="150" id="wc-cost-madrid-food" oninput="calcTotal('wc')"> <span class="cost-currency">USD</span>
+            </div>
+            <textarea class="notes-area" placeholder="Notas: opciones de hotel, restaurantes, etc..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- BARCELONA -->
+      <div class="segment country-es" id="wc-seg-bcn">
+        <div class="segment-dot" onclick="toggleSegment('wc-body-bcn')">🇪🇸</div>
+        <div class="segment-card">
+          <div class="segment-header" onclick="toggleSegment('wc-body-bcn')">
+            <div class="segment-title-block">
+              <div class="segment-country">España</div>
+              <div class="segment-city">Barcelona</div>
+              <div class="segment-dates" id="wc-dates-bcn">2 — 5 Sep</div>
+            </div>
+            <div class="segment-nights"><div class="n">3</div><div class="label">noches</div></div>
+            <span class="chevron" id="wc-chev-bcn">▼</span>
+          </div>
+          <div class="segment-body" id="wc-body-bcn">
+            <div style="margin-bottom:14px">
+              <strong style="font-size:13px">🏛️ Lugares imperdibles</strong>
+              <div class="spots-grid">
+                <span class="spot-tag">⛪ Sagrada Familia</span>
+                <span class="spot-tag">🏠 Park Güell</span>
+                <span class="spot-tag">🏖️ Barceloneta</span>
+                <span class="spot-tag">🛍️ Las Ramblas</span>
+                <span class="spot-tag">🍷 El Born</span>
+                <span class="spot-tag">🏰 Barrio Gótico</span>
+              </div>
+            </div>
+            <div style="margin-bottom:14px">
+              <strong style="font-size:13px">✈️ Transporte</strong><br>
+              <span class="transport-pill">🚄 AVE Madrid → Barcelona (~2.5h)</span>
+            </div>
+            <div class="cost-row">
+              <span class="cost-label">🏨 Alojamiento (3 noches)</span>
+              <input class="cost-input" type="number" placeholder="0" id="wc-cost-bcn-hotel" oninput="calcTotal('wc')"> <span class="cost-currency">USD</span>
+            </div>
+            <div class="cost-row">
+              <span class="cost-label">🚄 Tren AVE (pp)</span>
+              <input class="cost-input" type="number" placeholder="60" id="wc-cost-bcn-train" oninput="calcTotal('wc')"> <span class="cost-currency">USD</span>
+            </div>
+            <div class="cost-row">
+              <span class="cost-label">🍽️ Comidas estimadas</span>
+              <input class="cost-input" type="number" placeholder="150" id="wc-cost-bcn-food" oninput="calcTotal('wc')"> <span class="cost-currency">USD</span>
+            </div>
+            <textarea class="notes-area" placeholder="Notas: ¿Airbnb o hotel? ¿Zona Eixample o Gràcia?"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- PARIS -->
+      <div class="segment country-fr">
+        <div class="segment-dot" onclick="toggleSegment('wc-body-paris')">🇫🇷</div>
+        <div class="segment-card">
+          <div class="segment-header" onclick="toggleSegment('wc-body-paris')">
+            <div class="segment-title-block">
+              <div class="segment-country">Francia</div>
+              <div class="segment-city">París</div>
+              <div class="segment-dates" id="wc-dates-paris">5 — 8 Sep</div>
+            </div>
+            <div class="segment-nights"><div class="n">3</div><div class="label">noches</div></div>
+            <span class="chevron" id="wc-chev-paris">▼</span>
+          </div>
+          <div class="segment-body" id="wc-body-paris">
+            <div style="margin-bottom:14px">
+              <strong style="font-size:13px">🏛️ Lugares imperdibles</strong>
+              <div class="spots-grid">
+                <span class="spot-tag">🗼 Torre Eiffel</span>
+                <span class="spot-tag">🎨 El Louvre</span>
+                <span class="spot-tag">⛪ Notre Dame</span>
+                <span class="spot-tag">🛍️ Champs-Élysées</span>
+                <span class="spot-tag">🎡 Montmartre</span>
+                <span class="spot-tag">🛶 Sena en barco</span>
+              </div>
+            </div>
+            <div style="margin-bottom:14px">
+              <strong style="font-size:13px">✈️ Transporte</strong><br>
+              <span class="transport-pill">✈️ Vuelo BCN → CDG (~2h)</span>
+            </div>
+            <div class="cost-row">
+              <span class="cost-label">🏨 Alojamiento (3 noches)</span>
+              <input class="cost-input" type="number" placeholder="0" id="wc-cost-paris-hotel" oninput="calcTotal('wc')"> <span class="cost-currency">USD</span>
+            </div>
+            <div class="cost-row">
+              <span class="cost-label">✈️ Vuelo BCN-CDG (pp)</span>
+              <input class="cost-input" type="number" placeholder="100" id="wc-cost-paris-flight" oninput="calcTotal('wc')"> <span class="cost-currency">USD</span>
+            </div>
+            <div class="cost-row">
+              <span class="cost-label">🍽️ Comidas estimadas</span>
+              <input class="cost-input" type="number" placeholder="200" id="wc-cost-paris-food" oninput="calcTotal('wc')"> <span class="cost-currency">USD</span>
+            </div>
+            <textarea class="notes-area" placeholder="Notas: Marais o Montmartre? ¿Reservar Louvre con anticipación!"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- LISBOA / BODA -->
+      <div class="segment country-pt">
+        <div class="segment-dot" onclick="toggleSegment('wc-body-lisbon')">🇵🇹</div>
+        <div class="segment-card">
+          <div class="segment-header" onclick="toggleSegment('wc-body-lisbon')">
+            <div class="segment-title-block">
+              <div class="segment-country">Portugal</div>
+              <div class="segment-city">Lisboa</div>
+              <div class="segment-dates" id="wc-dates-lisbon">8 — 13 Sep</div>
+            </div>
+            <div class="segment-nights"><div class="n">5</div><div class="label">noches</div></div>
+            <span class="chevron" id="wc-chev-lisbon">▼</span>
+          </div>
+          <div class="segment-body" id="wc-body-lisbon">
+            <div class="wedding-card">
+              <h3>💒 ¡La Boda!</h3>
+              <p>Sábado 12 de septiembre, 2026 · Lisboa, Portugal</p>
+              <p style="margin-top:6px; font-size:13px">Esta fecha es inamovible — toda la ruta gira aquí 💍</p>
+            </div>
+            <div style="margin-bottom:14px">
+              <strong style="font-size:13px">🏛️ Lugares imperdibles</strong>
+              <div class="spots-grid">
+                <span class="spot-tag">🏰 Castelo São Jorge</span>
+                <span class="spot-tag">🚋 Tranvía 28</span>
+                <span class="spot-tag">🍷 Barrio de Alfama</span>
+                <span class="spot-tag">🌊 Belém + Torre</span>
+                <span class="spot-tag">🎵 Fado en vivo</span>
+                <span class="spot-tag">🌅 Mirador Graça</span>
+              </div>
+            </div>
+            <div style="margin-bottom:14px">
+              <strong style="font-size:13px">✈️ Transporte</strong><br>
+              <span class="transport-pill">✈️ Vuelo CDG → LIS (~2.5h)</span>
+            </div>
+            <div class="cost-row">
+              <span class="cost-label">🏨 Alojamiento (5 noches)</span>
+              <input class="cost-input" type="number" placeholder="0" id="wc-cost-lisbon-hotel" oninput="calcTotal('wc')"> <span class="cost-currency">USD</span>
+            </div>
+            <div class="cost-row">
+              <span class="cost-label">✈️ Vuelo CDG-LIS (pp)</span>
+              <input class="cost-input" type="number" placeholder="120" id="wc-cost-lisbon-flight" oninput="calcTotal('wc')"> <span class="cost-currency">USD</span>
+            </div>
+            <div class="cost-row">
+              <span class="cost-label">🍽️ Comidas estimadas</span>
+              <input class="cost-input" type="number" placeholder="200" id="wc-cost-lisbon-food" oninput="calcTotal('wc')"> <span class="cost-currency">USD</span>
+            </div>
+            <textarea class="notes-area" placeholder="Notas: Reservar hotel early! La ciudad se llena durante la boda. Sintra de day trip."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- CRUCERO MEDITERRÁNEO -->
+      <div class="segment country-cruise">
+        <div class="segment-dot" onclick="toggleSegment('wc-body-cruise')">🚢</div>
+        <div class="segment-card">
+          <div class="segment-header" onclick="toggleSegment('wc-body-cruise')">
+            <div class="segment-title-block">
+              <div class="segment-country" style="color:#1A4A5A">Mediterráneo</div>
+              <div class="segment-city">Crucero 🚢</div>
+              <div class="segment-dates" id="wc-dates-cruise">13 — 20 Sep</div>
+            </div>
+            <div class="segment-nights"><div class="n">7</div><div class="label">noches</div></div>
+            <span class="chevron" id="wc-chev-cruise">▼</span>
+          </div>
+          <div class="segment-body" id="wc-body-cruise">
+            <div class="cruise-card">
+              <h3>🌊 Crucero Mediterráneo</h3>
+              <p>7 noches post-boda · Sale desde Lisboa o Barcelona</p>
+              <p style="margin-top:6px; font-size:13px">Ruta típica: Barcelona → Marsella → Génova → Civitavecchia (Roma) → Palma → regreso</p>
+            </div>
+            <div style="margin-bottom:14px">
+              <strong style="font-size:13px">⚓ Puertos posibles</strong>
+              <div class="spots-grid">
+                <span class="spot-tag">🇪🇸 Barcelona</span>
+                <span class="spot-tag">🇫🇷 Marsella</span>
+                <span class="spot-tag">🇮🇹 Génova</span>
+                <span class="spot-tag">🇮🇹 Roma (Civitavecchia)</span>
+                <span class="spot-tag">🇪🇸 Palma de Mallorca</span>
+                <span class="spot-tag">🇫🇷 Niza</span>
+              </div>
+            </div>
+            <div class="cost-row">
+              <span class="cost-label">🚢 Cabina crucero (pp)</span>
+              <input class="cost-input" type="number" placeholder="0" id="wc-cost-cruise-cabin" oninput="calcTotal('wc')"> <span class="cost-currency">USD</span>
+            </div>
+            <div class="cost-row">
+              <span class="cost-label">✈️ Vuelo LIS → embarque (pp)</span>
+              <input class="cost-input" type="number" placeholder="0" id="wc-cost-cruise-flight" oninput="calcTotal('wc')"> <span class="cost-currency">USD</span>
+            </div>
+            <div class="cost-row">
+              <span class="cost-label">🍽️ Extras + excursiones</span>
+              <input class="cost-input" type="number" placeholder="200" id="wc-cost-cruise-extras" oninput="calcTotal('wc')"> <span class="cost-currency">USD</span>
+            </div>
+            <textarea class="notes-area" placeholder="Notas: ¿MSC, Costa, Royal Caribbean? Buscar ofertas early bird. ¿Cabina interior o con balcón?"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-line"></div>
+    </div>
+
+    <div class="cost-summary">
+      <h3>💵 Resumen de costos (por persona)</h3>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <div class="val" id="wc-summary-hotel">$0</div>
+          <div class="lbl">Alojamiento</div>
+        </div>
+        <div class="summary-item">
+          <div class="val" id="wc-summary-flights">$0</div>
+          <div class="lbl">Vuelos / Trenes</div>
+        </div>
+        <div class="summary-item">
+          <div class="val" id="wc-summary-food">$0</div>
+          <div class="lbl">Comidas</div>
+        </div>
+        <div class="summary-item">
+          <div class="val" id="wc-summary-cruise">$0</div>
+          <div class="lbl">Crucero</div>
+        </div>
+        <div class="summary-item">
+          <div class="val" id="wc-summary-total">$0</div>
+          <div class="lbl">Total pp</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================================================ TAB 2: SIN CRUCERO ================================================ -->
+<div id="tab-no-cruise" class="tab-panel">
+  <div class="itinerary-container">
+
+    <div class="trip-summary-bar">
+      <div class="tsb-item"><div class="tsb-val">22</div><div class="tsb-lbl">Noches totales</div></div>
+      <div class="tsb-item"><div class="tsb-val">4</div><div class="tsb-lbl">Países</div></div>
+      <div class="tsb-item"><div class="tsb-val" style="color:var(--sage)">+Italia</div><div class="tsb-lbl">Con más tiempo</div></div>
+      <div class="tsb-item"><div class="tsb-val" id="nc-total-cost">$0</div><div class="tsb-lbl">Costo estimado pp</div></div>
+      <button class="toggle-all-btn" onclick="toggleAll('nc')">Expandir todo ▾</button>
+    </div>
+
+    <div class="config-panel">
+      <h3>⚙️ Ajustar fechas de inicio</h3>
+      <div class="config-grid">
+        <div class="config-field">
+          <label>Fecha de salida</label>
+          <input type="date" id="nc-start-date" value="2026-08-30" onchange="updateDatesNC()">
+        </div>
+        <div class="config-field">
+          <label>Moneda de referencia</label>
+          <select><option>USD $</option><option>EUR €</option></select>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Itinerario sin crucero · más tiempo en tierra</div>
+
+    <div class="timeline" id="nc-timeline">
+
+      <!-- MADRID -->
+      <div class="segment country-es">
+        <div class="segment-dot" onclick="toggleSegment('nc-body-madrid')">🇪🇸</div>
+        <div class="segment-card">
+          <div class="segment-header" onclick="toggleSegment('nc-body-madrid')">
+            <div class="segment-title-block">
+              <div class="segment-country">España</div>
+              <div class="segment-city">Madrid</div>
+              <div class="segment-dates" id="nc-dates-madrid">30 Ago — 2 Sep</div>
+            </div>
+            <div class="segment-nights"><div class="n">3</div><div class="label">noches</div></div>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="segment-body" id="nc-body-madrid">
+            <div class="spots-grid" style="margin-bottom:14px">
+              <span class="spot-tag">🎨 Museo del Prado</span>
+              <span class="spot-tag">☀️ Parque del Retiro</span>
+              <span class="spot-tag">🏰 Palacio Real</span>
+              <span class="spot-tag">🍷 Mercado San Miguel</span>
+            </div>
+            <div class="cost-row"><span class="cost-label">🏨 Alojamiento (3n)</span><input class="cost-input" type="number" placeholder="0" id="nc-cost-madrid-hotel" oninput="calcTotal('nc')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">✈️ Vuelo (pp)</span><input class="cost-input" type="number" placeholder="0" id="nc-cost-madrid-flight" oninput="calcTotal('nc')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">🍽️ Comidas</span><input class="cost-input" type="number" placeholder="150" id="nc-cost-madrid-food" oninput="calcTotal('nc')"><span class="cost-currency">USD</span></div>
+            <textarea class="notes-area" placeholder="Notas..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- BARCELONA -->
+      <div class="segment country-es">
+        <div class="segment-dot" onclick="toggleSegment('nc-body-bcn')">🇪🇸</div>
+        <div class="segment-card">
+          <div class="segment-header" onclick="toggleSegment('nc-body-bcn')">
+            <div class="segment-title-block">
+              <div class="segment-country">España</div>
+              <div class="segment-city">Barcelona</div>
+              <div class="segment-dates" id="nc-dates-bcn">2 — 5 Sep</div>
+            </div>
+            <div class="segment-nights"><div class="n">3</div><div class="label">noches</div></div>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="segment-body" id="nc-body-bcn">
+            <div class="spots-grid" style="margin-bottom:14px">
+              <span class="spot-tag">⛪ Sagrada Familia</span>
+              <span class="spot-tag">🏠 Park Güell</span>
+              <span class="spot-tag">🏖️ Barceloneta</span>
+              <span class="spot-tag">🏰 Barrio Gótico</span>
+            </div>
+            <div class="cost-row"><span class="cost-label">🏨 Alojamiento (3n)</span><input class="cost-input" type="number" placeholder="0" id="nc-cost-bcn-hotel" oninput="calcTotal('nc')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">🚄 Tren AVE (pp)</span><input class="cost-input" type="number" placeholder="60" id="nc-cost-bcn-train" oninput="calcTotal('nc')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">🍽️ Comidas</span><input class="cost-input" type="number" placeholder="150" id="nc-cost-bcn-food" oninput="calcTotal('nc')"><span class="cost-currency">USD</span></div>
+            <textarea class="notes-area" placeholder="Notas..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- PARIS -->
+      <div class="segment country-fr">
+        <div class="segment-dot" onclick="toggleSegment('nc-body-paris')">🇫🇷</div>
+        <div class="segment-card">
+          <div class="segment-header" onclick="toggleSegment('nc-body-paris')">
+            <div class="segment-title-block">
+              <div class="segment-country">Francia</div>
+              <div class="segment-city">París</div>
+              <div class="segment-dates" id="nc-dates-paris">5 — 8 Sep</div>
+            </div>
+            <div class="segment-nights"><div class="n">3</div><div class="label">noches</div></div>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="segment-body" id="nc-body-paris">
+            <div class="spots-grid" style="margin-bottom:14px">
+              <span class="spot-tag">🗼 Torre Eiffel</span>
+              <span class="spot-tag">🎨 El Louvre</span>
+              <span class="spot-tag">⛪ Notre Dame</span>
+              <span class="spot-tag">🎡 Montmartre</span>
+            </div>
+            <div class="cost-row"><span class="cost-label">🏨 Alojamiento (3n)</span><input class="cost-input" type="number" placeholder="0" id="nc-cost-paris-hotel" oninput="calcTotal('nc')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">✈️ Vuelo BCN-CDG (pp)</span><input class="cost-input" type="number" placeholder="100" id="nc-cost-paris-flight" oninput="calcTotal('nc')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">🍽️ Comidas</span><input class="cost-input" type="number" placeholder="200" id="nc-cost-paris-food" oninput="calcTotal('nc')"><span class="cost-currency">USD</span></div>
+            <textarea class="notes-area" placeholder="Notas..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROME -->
+      <div class="segment country-it">
+        <div class="segment-dot" onclick="toggleSegment('nc-body-rome')">🇮🇹</div>
+        <div class="segment-card">
+          <div class="segment-header" onclick="toggleSegment('nc-body-rome')">
+            <div class="segment-title-block">
+              <div class="segment-country">Italia</div>
+              <div class="segment-city">Roma</div>
+              <div class="segment-dates" id="nc-dates-rome">8 — 11 Sep</div>
+            </div>
+            <div class="segment-nights"><div class="n">3</div><div class="label">noches</div></div>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="segment-body" id="nc-body-rome">
+            <div class="spots-grid" style="margin-bottom:14px">
+              <span class="spot-tag">🏛️ Coliseo</span>
+              <span class="spot-tag">⛪ Vaticano</span>
+              <span class="spot-tag">⛲ Fontana di Trevi</span>
+              <span class="spot-tag">🏛️ Foro Romano</span>
+              <span class="spot-tag">🍕 Pasta & Pizza</span>
+              <span class="spot-tag">🌿 Trastevere</span>
+            </div>
+            <div style="margin-bottom:14px">
+              <span class="transport-pill">✈️ Vuelo CDG → FCO (~2h)</span>
+            </div>
+            <div class="cost-row"><span class="cost-label">🏨 Alojamiento (3n)</span><input class="cost-input" type="number" placeholder="0" id="nc-cost-rome-hotel" oninput="calcTotal('nc')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">✈️ Vuelo CDG-FCO (pp)</span><input class="cost-input" type="number" placeholder="120" id="nc-cost-rome-flight" oninput="calcTotal('nc')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">🍽️ Comidas</span><input class="cost-input" type="number" placeholder="180" id="nc-cost-rome-food" oninput="calcTotal('nc')"><span class="cost-currency">USD</span></div>
+            <textarea class="notes-area" placeholder="Notas: Reservar Coliseo y Vaticano con antelación!"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- LISBOA / BODA -->
+      <div class="segment country-pt">
+        <div class="segment-dot" onclick="toggleSegment('nc-body-lisbon')">🇵🇹</div>
+        <div class="segment-card">
+          <div class="segment-header" onclick="toggleSegment('nc-body-lisbon')">
+            <div class="segment-title-block">
+              <div class="segment-country">Portugal</div>
+              <div class="segment-city">Lisboa + Algarve</div>
+              <div class="segment-dates" id="nc-dates-lisbon">11 — 20 Sep</div>
+            </div>
+            <div class="segment-nights"><div class="n">9</div><div class="label">noches</div></div>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="segment-body" id="nc-body-lisbon">
+            <div class="wedding-card">
+              <h3>💒 ¡La Boda!</h3>
+              <p>Sábado 12 de septiembre · Lisboa, Portugal</p>
+            </div>
+            <div class="spots-grid" style="margin-bottom:14px">
+              <span class="spot-tag">🏰 Castelo São Jorge</span>
+              <span class="spot-tag">🚋 Tranvía 28</span>
+              <span class="spot-tag">🌊 Sintra</span>
+              <span class="spot-tag">🏖️ Cascais</span>
+              <span class="spot-tag">🌅 Algarve</span>
+              <span class="spot-tag">🎵 Fado</span>
+            </div>
+            <div style="margin-bottom:14px"><span class="transport-pill">✈️ Vuelo FCO → LIS (~2.5h)</span></div>
+            <div class="cost-row"><span class="cost-label">🏨 Alojamiento Lisboa (5n)</span><input class="cost-input" type="number" placeholder="0" id="nc-cost-lisbon-hotel" oninput="calcTotal('nc')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">🏖️ Alojamiento Algarve (4n)</span><input class="cost-input" type="number" placeholder="0" id="nc-cost-algarve-hotel" oninput="calcTotal('nc')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">✈️ Vuelo FCO-LIS (pp)</span><input class="cost-input" type="number" placeholder="120" id="nc-cost-lisbon-flight" oninput="calcTotal('nc')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">🚌 Bus Lisboa-Algarve (pp)</span><input class="cost-input" type="number" placeholder="20" id="nc-cost-algarve-bus" oninput="calcTotal('nc')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">🍽️ Comidas totales</span><input class="cost-input" type="number" placeholder="350" id="nc-cost-lisbon-food" oninput="calcTotal('nc')"><span class="cost-currency">USD</span></div>
+            <textarea class="notes-area" placeholder="Notas: Algarve = Praia da Marinha, Lagos, Ponta da Piedade ❤️"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-line"></div>
+    </div>
+
+    <div class="cost-summary">
+      <h3>💵 Resumen de costos (por persona)</h3>
+      <div class="summary-grid">
+        <div class="summary-item"><div class="val" id="nc-summary-hotel">$0</div><div class="lbl">Alojamiento</div></div>
+        <div class="summary-item"><div class="val" id="nc-summary-flights">$0</div><div class="lbl">Vuelos / Trenes</div></div>
+        <div class="summary-item"><div class="val" id="nc-summary-food">$0</div><div class="lbl">Comidas</div></div>
+        <div class="summary-item"><div class="val" id="nc-summary-total">$0</div><div class="lbl">Total pp</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================================================ TAB 3: MAX COUNTRIES ================================================ -->
+<div id="tab-max-countries" class="tab-panel">
+  <div class="itinerary-container">
+
+    <div class="trip-summary-bar">
+      <div class="tsb-item"><div class="tsb-val">22</div><div class="tsb-lbl">Noches</div></div>
+      <div class="tsb-item"><div class="tsb-val">6</div><div class="tsb-lbl">Países</div></div>
+      <div class="tsb-item"><div class="tsb-val">10+</div><div class="tsb-lbl">Ciudades</div></div>
+      <div class="tsb-item"><div class="tsb-val" id="mx-total-cost">$0</div><div class="tsb-lbl">Costo estimado pp</div></div>
+      <button class="toggle-all-btn" onclick="toggleAll('mx')">Expandir todo ▾</button>
+    </div>
+
+    <div style="background:rgba(196,98,58,0.08); border:1.5px solid rgba(196,98,58,0.3); border-radius:12px; padding:16px 20px; margin-bottom:24px; font-size:14px; color:var(--terracotta);">
+      ⚡ <strong>Itinerario agresivo:</strong> muchos destinos, poco tiempo en cada uno. Ideal si priorizan variedad sobre profundidad. Se necesitará más logística y transporte. 
+    </div>
+
+    <div class="config-panel">
+      <h3>⚙️ Ajustar fechas de inicio</h3>
+      <div class="config-grid">
+        <div class="config-field">
+          <label>Fecha de salida</label>
+          <input type="date" id="mx-start-date" value="2026-08-30" onchange="updateDatesMX()">
+        </div>
+        <div class="config-field">
+          <label>Moneda</label>
+          <select><option>USD $</option><option>EUR €</option></select>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Itinerario máximo de destinos</div>
+
+    <div class="timeline" id="mx-timeline">
+
+      <!-- MADRID -->
+      <div class="segment country-es">
+        <div class="segment-dot" onclick="toggleSegment('mx-body-madrid')">🇪🇸</div>
+        <div class="segment-card">
+          <div class="segment-header" onclick="toggleSegment('mx-body-madrid')">
+            <div class="segment-title-block">
+              <div class="segment-country">España</div>
+              <div class="segment-city">Madrid</div>
+              <div class="segment-dates" id="mx-dates-madrid">30 Ago — 1 Sep</div>
+            </div>
+            <div class="segment-nights"><div class="n">2</div><div class="label">noches</div></div>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="segment-body" id="mx-body-madrid">
+            <div class="spots-grid" style="margin-bottom:14px">
+              <span class="spot-tag">🎨 Museo del Prado</span>
+              <span class="spot-tag">☀️ Retiro</span>
+              <span class="spot-tag">🏰 Palacio Real</span>
+            </div>
+            <div class="cost-row"><span class="cost-label">🏨 Alojamiento (2n)</span><input class="cost-input" type="number" placeholder="0" id="mx-cost-madrid-hotel" oninput="calcTotal('mx')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">✈️ Vuelo (pp)</span><input class="cost-input" type="number" placeholder="0" id="mx-cost-madrid-flight" oninput="calcTotal('mx')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">🍽️ Comidas</span><input class="cost-input" type="number" placeholder="80" id="mx-cost-madrid-food" oninput="calcTotal('mx')"><span class="cost-currency">USD</span></div>
+            <textarea class="notes-area" placeholder="Notas..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEVILLA -->
+      <div class="segment country-es">
+        <div class="segment-dot" onclick="toggleSegment('mx-body-sevilla')">🇪🇸</div>
+        <div class="segment-card">
+          <div class="segment-header" onclick="toggleSegment('mx-body-sevilla')">
+            <div class="segment-title-block">
+              <div class="segment-country">España</div>
+              <div class="segment-city">Sevilla</div>
+              <div class="segment-dates" id="mx-dates-sevilla">1 — 3 Sep</div>
+            </div>
+            <div class="segment-nights"><div class="n">2</div><div class="label">noches</div></div>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="segment-body" id="mx-body-sevilla">
+            <div class="spots-grid" style="margin-bottom:14px">
+              <span class="spot-tag">🕌 Real Alcázar</span>
+              <span class="spot-tag">⛪ Catedral Sevilla</span>
+              <span class="spot-tag">💃 Flamenco</span>
+              <span class="spot-tag">🌉 Barrio de Triana</span>
+            </div>
+            <div style="margin-bottom:14px"><span class="transport-pill">🚄 AVE Madrid → Sevilla (~2.5h)</span></div>
+            <div class="cost-row"><span class="cost-label">🏨 Alojamiento (2n)</span><input class="cost-input" type="number" placeholder="0" id="mx-cost-sevilla-hotel" oninput="calcTotal('mx')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">🚄 Tren (pp)</span><input class="cost-input" type="number" placeholder="60" id="mx-cost-sevilla-train" oninput="calcTotal('mx')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">🍽️ Comidas</span><input class="cost-input" type="number" placeholder="100" id="mx-cost-sevilla-food" oninput="calcTotal('mx')"><span class="cost-currency">USD</span></div>
+            <textarea class="notes-area" placeholder="Notas: Sevilla es espectacular en septiembre!"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- OPORTO -->
+      <div class="segment country-pt">
+        <div class="segment-dot" onclick="toggleSegment('mx-body-porto')">🇵🇹</div>
+        <div class="segment-card">
+          <div class="segment-header" onclick="toggleSegment('mx-body-porto')">
+            <div class="segment-title-block">
+              <div class="segment-country">Portugal</div>
+              <div class="segment-city">Oporto</div>
+              <div class="segment-dates" id="mx-dates-porto">3 — 5 Sep</div>
+            </div>
+            <div class="segment-nights"><div class="n">2</div><div class="label">noches</div></div>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="segment-body" id="mx-body-porto">
+            <div class="spots-grid" style="margin-bottom:14px">
+              <span class="spot-tag">🍷 Bodegas Oporto</span>
+              <span class="spot-tag">🌉 Puente Dom Luís</span>
+              <span class="spot-tag">📚 Livraria Lello</span>
+              <span class="spot-tag">🎵 Ribeira</span>
+            </div>
+            <div style="margin-bottom:14px"><span class="transport-pill">🚌 Bus / Flixbus Sevilla → Porto</span></div>
+            <div class="cost-row"><span class="cost-label">🏨 Alojamiento (2n)</span><input class="cost-input" type="number" placeholder="0" id="mx-cost-porto-hotel" oninput="calcTotal('mx')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">🚌 Bus (pp)</span><input class="cost-input" type="number" placeholder="30" id="mx-cost-porto-bus" oninput="calcTotal('mx')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">🍽️ Comidas</span><input class="cost-input" type="number" placeholder="100" id="mx-cost-porto-food" oninput="calcTotal('mx')"><span class="cost-currency">USD</span></div>
+            <textarea class="notes-area" placeholder="Notas: Probar francesinha obligatorio!"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- PARIS -->
+      <div class="segment country-fr">
+        <div class="segment-dot" onclick="toggleSegment('mx-body-paris')">🇫🇷</div>
+        <div class="segment-card">
+          <div class="segment-header" onclick="toggleSegment('mx-body-paris')">
+            <div class="segment-title-block">
+              <div class="segment-country">Francia</div>
+              <div class="segment-city">París</div>
+              <div class="segment-dates" id="mx-dates-paris">5 — 8 Sep</div>
+            </div>
+            <div class="segment-nights"><div class="n">3</div><div class="label">noches</div></div>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="segment-body" id="mx-body-paris">
+            <div class="spots-grid" style="margin-bottom:14px">
+              <span class="spot-tag">🗼 Torre Eiffel</span>
+              <span class="spot-tag">🎨 El Louvre</span>
+              <span class="spot-tag">⛪ Notre Dame</span>
+              <span class="spot-tag">🎡 Montmartre</span>
+            </div>
+            <div style="margin-bottom:14px"><span class="transport-pill">✈️ Vuelo OPO → CDG</span></div>
+            <div class="cost-row"><span class="cost-label">🏨 Alojamiento (3n)</span><input class="cost-input" type="number" placeholder="0" id="mx-cost-paris-hotel" oninput="calcTotal('mx')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">✈️ Vuelo (pp)</span><input class="cost-input" type="number" placeholder="80" id="mx-cost-paris-flight" oninput="calcTotal('mx')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">🍽️ Comidas</span><input class="cost-input" type="number" placeholder="180" id="mx-cost-paris-food" oninput="calcTotal('mx')"><span class="cost-currency">USD</span></div>
+            <textarea class="notes-area" placeholder="Notas..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- AMSTERDAM -->
+      <div class="segment" style="--country-color:#FF4400">
+        <div class="segment-dot" onclick="toggleSegment('mx-body-ams')" style="background:#FF6B35">🇳🇱</div>
+        <div class="segment-card">
+          <div class="segment-header" onclick="toggleSegment('mx-body-ams')">
+            <div class="segment-title-block">
+              <div class="segment-country" style="color:#FF4400">Países Bajos</div>
+              <div class="segment-city">Ámsterdam</div>
+              <div class="segment-dates" id="mx-dates-ams">8 — 10 Sep</div>
+            </div>
+            <div class="segment-nights"><div class="n">2</div><div class="label">noches</div></div>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="segment-body" id="mx-body-ams">
+            <div class="spots-grid" style="margin-bottom:14px">
+              <span class="spot-tag">🌷 Rijksmuseum</span>
+              <span class="spot-tag">🚲 Canales en bici</span>
+              <span class="spot-tag">🌸 Anne Frank Huis</span>
+              <span class="spot-tag">🧀 Mercado de quesos</span>
+            </div>
+            <div style="margin-bottom:14px"><span class="transport-pill">🚄 Thalys París → Ámsterdam (~3.5h)</span></div>
+            <div class="cost-row"><span class="cost-label">🏨 Alojamiento (2n)</span><input class="cost-input" type="number" placeholder="0" id="mx-cost-ams-hotel" oninput="calcTotal('mx')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">🚄 Tren (pp)</span><input class="cost-input" type="number" placeholder="80" id="mx-cost-ams-train" oninput="calcTotal('mx')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">🍽️ Comidas</span><input class="cost-input" type="number" placeholder="120" id="mx-cost-ams-food" oninput="calcTotal('mx')"><span class="cost-currency">USD</span></div>
+            <textarea class="notes-area" placeholder="Notas..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- LISBOA / BODA -->
+      <div class="segment country-pt">
+        <div class="segment-dot" onclick="toggleSegment('mx-body-lisbon')">🇵🇹</div>
+        <div class="segment-card">
+          <div class="segment-header" onclick="toggleSegment('mx-body-lisbon')">
+            <div class="segment-title-block">
+              <div class="segment-country">Portugal</div>
+              <div class="segment-city">Lisboa</div>
+              <div class="segment-dates" id="mx-dates-lisbon">10 — 15 Sep</div>
+            </div>
+            <div class="segment-nights"><div class="n">5</div><div class="label">noches</div></div>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="segment-body" id="mx-body-lisbon">
+            <div class="wedding-card">
+              <h3>💒 ¡La Boda!</h3>
+              <p>Sábado 12 de septiembre · Lisboa</p>
+            </div>
+            <div class="spots-grid" style="margin-bottom:14px">
+              <span class="spot-tag">🏰 São Jorge</span>
+              <span class="spot-tag">🌊 Sintra</span>
+              <span class="spot-tag">🏖️ Cascais</span>
+              <span class="spot-tag">🎵 Fado</span>
+            </div>
+            <div style="margin-bottom:14px"><span class="transport-pill">✈️ Vuelo AMS → LIS</span></div>
+            <div class="cost-row"><span class="cost-label">🏨 Alojamiento (5n)</span><input class="cost-input" type="number" placeholder="0" id="mx-cost-lisbon-hotel" oninput="calcTotal('mx')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">✈️ Vuelo (pp)</span><input class="cost-input" type="number" placeholder="100" id="mx-cost-lisbon-flight" oninput="calcTotal('mx')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">🍽️ Comidas</span><input class="cost-input" type="number" placeholder="200" id="mx-cost-lisbon-food" oninput="calcTotal('mx')"><span class="cost-currency">USD</span></div>
+            <textarea class="notes-area" placeholder="Notas..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROMA -->
+      <div class="segment country-it">
+        <div class="segment-dot" onclick="toggleSegment('mx-body-rome')">🇮🇹</div>
+        <div class="segment-card">
+          <div class="segment-header" onclick="toggleSegment('mx-body-rome')">
+            <div class="segment-title-block">
+              <div class="segment-country">Italia</div>
+              <div class="segment-city">Roma + Florencia</div>
+              <div class="segment-dates" id="mx-dates-rome">15 — 20 Sep</div>
+            </div>
+            <div class="segment-nights"><div class="n">5</div><div class="label">noches</div></div>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="segment-body" id="mx-body-rome">
+            <div class="spots-grid" style="margin-bottom:14px">
+              <span class="spot-tag">🏛️ Coliseo</span>
+              <span class="spot-tag">⛪ Vaticano</span>
+              <span class="spot-tag">⛲ Fontana di Trevi</span>
+              <span class="spot-tag">🌸 Florencia</span>
+              <span class="spot-tag">🖼️ Uffizi</span>
+              <span class="spot-tag">🌉 Ponte Vecchio</span>
+            </div>
+            <div style="margin-bottom:14px">
+              <span class="transport-pill">✈️ Vuelo LIS → FCO</span>
+              <span class="transport-pill">🚄 Trenitalia Roma → Florencia (~1.5h)</span>
+            </div>
+            <div class="cost-row"><span class="cost-label">🏨 Alojamiento Roma (3n)</span><input class="cost-input" type="number" placeholder="0" id="mx-cost-rome-hotel" oninput="calcTotal('mx')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">🏨 Alojamiento Florencia (2n)</span><input class="cost-input" type="number" placeholder="0" id="mx-cost-florence-hotel" oninput="calcTotal('mx')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">✈️ Vuelo LIS-FCO (pp)</span><input class="cost-input" type="number" placeholder="100" id="mx-cost-rome-flight" oninput="calcTotal('mx')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">🚄 Tren Roma-Florencia (pp)</span><input class="cost-input" type="number" placeholder="30" id="mx-cost-florence-train" oninput="calcTotal('mx')"><span class="cost-currency">USD</span></div>
+            <div class="cost-row"><span class="cost-label">🍽️ Comidas totales</span><input class="cost-input" type="number" placeholder="280" id="mx-cost-rome-food" oninput="calcTotal('mx')"><span class="cost-currency">USD</span></div>
+            <textarea class="notes-area" placeholder="Notas: 3 noches Roma + 2 noches Florencia. Vuelo de regreso desde Florencia o Roma."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-line"></div>
+    </div>
+
+    <div class="cost-summary">
+      <h3>💵 Resumen de costos (por persona)</h3>
+      <div class="summary-grid">
+        <div class="summary-item"><div class="val" id="mx-summary-hotel">$0</div><div class="lbl">Alojamiento</div></div>
+        <div class="summary-item"><div class="val" id="mx-summary-flights">$0</div><div class="lbl">Vuelos / Trenes</div></div>
+        <div class="summary-item"><div class="val" id="mx-summary-food">$0</div><div class="lbl">Comidas</div></div>
+        <div class="summary-item"><div class="val" id="mx-summary-total">$0</div><div class="lbl">Total pp</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================================================ TAB 4: EXPENSES ================================================ -->
+<div id="tab-expenses" class="tab-panel">
+  <div class="expense-container">
+
+    <div class="expense-header">
+      <div>
+        <div style="font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:4px">Europa 2026 · Barbi, Ale & Thai</div>
+        <h2>💰 Gastos del viaje</h2>
+      </div>
+      <button class="add-expense-btn" onclick="toggleAddForm()">
+        <span>＋</span> Agregar gasto
+      </button>
+    </div>
+
+    <!-- ADD FORM -->
+    <div class="add-form" id="add-form">
+      <h3 style="font-family:'Playfair Display',serif; font-size:18px; margin-bottom:16px">Nuevo gasto</h3>
+      <div class="form-grid">
+        <div class="form-field">
+          <label>Descripción</label>
+          <input type="text" id="exp-desc" placeholder="Ej: Hotel Barcelona 3 noches">
+        </div>
+        <div class="form-field">
+          <label>Monto (USD)</label>
+          <input type="number" id="exp-amount" placeholder="0" min="0" step="0.01">
+        </div>
+        <div class="form-field">
+          <label>Categoría</label>
+          <select id="exp-category">
+            <option value="alojamiento">🏨 Alojamiento</option>
+            <option value="transporte">✈️ Transporte</option>
+            <option value="comida">🍽️ Comida</option>
+            <option value="actividad">🎭 Actividad</option>
+            <option value="crucero">🚢 Crucero</option>
+            <option value="otro">📦 Otro</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-grid" style="grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px">
+        <div class="form-field">
+          <label>País / Ciudad</label>
+          <input type="text" id="exp-location" placeholder="Ej: Barcelona">
+        </div>
+        <div class="form-field">
+          <label>Fecha</label>
+          <input type="date" id="exp-date">
+        </div>
+      </div>
+      <div style="margin-bottom:10px">
+        <label style="font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:8px">¿Quién pagó?</label>
+        <div class="payers-grid">
+          <button class="payer-toggle" data-name="Barbi" onclick="togglePayer(this)">👩🏻‍🦱 Barbi</button>
+          <button class="payer-toggle" data-name="Ale" onclick="togglePayer(this)">👩🏼 Ale</button>
+          <button class="payer-toggle" data-name="Thai" onclick="togglePayer(this)">👩🏽 Thai</button>
+        </div>
+      </div>
+      <div style="margin-bottom:14px">
+        <label style="font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:8px">¿Para quién aplica?</label>
+        <div class="payers-grid" id="for-whom">
+          <button class="payer-toggle selected" data-name="Barbi" onclick="toggleForWhom(this)">👩🏻‍🦱 Barbi</button>
+          <button class="payer-toggle selected" data-name="Ale" onclick="toggleForWhom(this)">👩🏼 Ale</button>
+          <button class="payer-toggle selected" data-name="Thai" onclick="toggleForWhom(this)">👩🏽 Thai</button>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-save" onclick="saveExpense()">Guardar gasto</button>
+        <button class="btn-cancel" onclick="toggleAddForm()">Cancelar</button>
+      </div>
+    </div>
+
+    <!-- FILTERS -->
+    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px">
+      <button onclick="filterExpenses('all')" id="filter-all" style="background:var(--ink); color:white; border:none; border-radius:100px; padding:7px 16px; font-size:12px; cursor:pointer; font-family:'DM Sans',sans-serif;">Todo</button>
+      <button onclick="filterExpenses('alojamiento')" class="filter-btn" style="background:var(--white); border:1.5px solid var(--border); border-radius:100px; padding:7px 16px; font-size:12px; cursor:pointer; font-family:'DM Sans',sans-serif;">🏨 Alojamiento</button>
+      <button onclick="filterExpenses('transporte')" class="filter-btn" style="background:var(--white); border:1.5px solid var(--border); border-radius:100px; padding:7px 16px; font-size:12px; cursor:pointer; font-family:'DM Sans',sans-serif;">✈️ Transporte</button>
+      <button onclick="filterExpenses('comida')" class="filter-btn" style="background:var(--white); border:1.5px solid var(--border); border-radius:100px; padding:7px 16px; font-size:12px; cursor:pointer; font-family:'DM Sans',sans-serif;">🍽️ Comida</button>
+      <button onclick="filterExpenses('actividad')" class="filter-btn" style="background:var(--white); border:1.5px solid var(--border); border-radius:100px; padding:7px 16px; font-size:12px; cursor:pointer; font-family:'DM Sans',sans-serif;">🎭 Actividad</button>
+      <button onclick="filterExpenses('crucero')" class="filter-btn" style="background:var(--white); border:1.5px solid var(--border); border-radius:100px; padding:7px 16px; font-size:12px; cursor:pointer; font-family:'DM Sans',sans-serif;">🚢 Crucero</button>
+    </div>
+
+    <!-- TABLE -->
+    <div style="background:var(--white); border:1.5px solid var(--border); border-radius:16px; overflow:hidden; margin-bottom:24px;">
+      <div class="expense-table-wrap">
+        <table class="expense-table">
+          <thead>
+            <tr>
+              <th>Descripción</th>
+              <th>Categoría</th>
+              <th>Lugar</th>
+              <th>Fecha</th>
+              <th>Pagó</th>
+              <th>Para</th>
+              <th style="text-align:right">Total</th>
+              <th style="text-align:right">Por persona</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="expense-tbody">
+            <tr id="empty-row">
+              <td colspan="9">
+                <div class="empty-state">
+                  <div class="icon">🧳</div>
+                  <p>Aún no hay gastos registrados.<br>¡Agrega el primero cuando confirmen algo!</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TOTALS BY PERSON -->
+    <div style="font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); font-weight:600; margin-bottom:12px">Resumen por viajera</div>
+
+    <div class="balance-section">
+      <div class="balance-card">
+        <div class="person">👩🏻‍🦱 Barbi</div>
+        <div class="paid" id="barbi-paid">Ha pagado: $0</div>
+        <div class="balance-total" id="barbi-balance">$0</div>
+        <div class="balance-label" id="barbi-balance-label">Balance</div>
+      </div>
+      <div class="balance-card">
+        <div class="person">👩🏼 Ale</div>
+        <div class="paid" id="ale-paid">Ha pagado: $0</div>
+        <div class="balance-total" id="ale-balance">$0</div>
+        <div class="balance-label" id="ale-balance-label">Balance</div>
+      </div>
+      <div class="balance-card">
+        <div class="person">👩🏽 Thai</div>
+        <div class="paid" id="thai-paid">Ha pagado: $0</div>
+        <div class="balance-total" id="thai-balance">$0</div>
+        <div class="balance-label" id="thai-balance-label">Balance</div>
+      </div>
+    </div>
+
+    <div class="settlements" id="settlements-box">
+      <h3>💸 Quién le debe a quién</h3>
+      <div id="settlements-list">
+        <div class="settlement-row" style="opacity:0.5; font-style:italic">Agrega gastos para ver los balances aquí...</div>
+      </div>
+    </div>
+
+    <!-- GRAND TOTAL -->
+    <div style="background:var(--white); border:1.5px solid var(--border); border-radius:16px; padding:20px 24px; margin-top:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+      <div>
+        <div style="font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted);">Gasto total del viaje</div>
+        <div style="font-family:'DM Mono',monospace; font-size:36px; font-weight:700; color:var(--terracotta);" id="grand-total">$0.00</div>
+      </div>
+      <div>
+        <div style="font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted);">Por persona (promedio)</div>
+        <div style="font-family:'DM Mono',monospace; font-size:28px; font-weight:700; color:var(--navy);" id="per-person-total">$0.00</div>
+      </div>
+      <div>
+        <div style="font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:6px">Exportar</div>
+        <button onclick="exportCSV()" style="background:var(--navy); color:white; border:none; border-radius:10px; padding:10px 18px; font-size:13px; cursor:pointer; font-family:'DM Sans',sans-serif;">↓ CSV</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ===================== STATE =====================
+let expenses = JSON.parse(localStorage.getItem('europa2026expenses') || '[]');
+let currentFilter = 'all';
+let selectedPayers = [];
+let selectedForWhom = ['Barbi','Ale','Thai'];
+
+// ===================== TABS =====================
+function switchTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ===================== ACCORDION =====================
+function toggleSegment(id) {
+  const body = document.getElementById(id);
+  if (!body) return;
+  body.classList.toggle('open');
+  const chevId = id.replace('body', 'chev');
+  const chev = document.getElementById(chevId);
+  if (chev) chev.classList.toggle('open');
+}
+
+function toggleAll(prefix) {
+  const bodies = document.querySelectorAll(`[id^="${prefix}-body"]`);
+  const allOpen = [...bodies].every(b => b.classList.contains('open'));
+  bodies.forEach(b => {
+    if (allOpen) b.classList.remove('open');
+    else b.classList.add('open');
+  });
+}
+
+// ===================== COST CALCULATORS =====================
+function getVal(id) {
+  const el = document.getElementById(id);
+  return el ? (parseFloat(el.value) || 0) : 0;
+}
+
+function fmt(n) { return '$' + Math.round(n).toLocaleString(); }
+
+function calcTotal(prefix) {
+  if (prefix === 'wc') {
+    const hotel = getVal('wc-cost-madrid-hotel') + getVal('wc-cost-bcn-hotel') + getVal('wc-cost-paris-hotel') + getVal('wc-cost-lisbon-hotel');
+    const flights = getVal('wc-cost-madrid-flight') + getVal('wc-cost-bcn-train') + getVal('wc-cost-paris-flight') + getVal('wc-cost-lisbon-flight') + getVal('wc-cost-cruise-flight');
+    const food = getVal('wc-cost-madrid-food') + getVal('wc-cost-bcn-food') + getVal('wc-cost-paris-food') + getVal('wc-cost-lisbon-food') + getVal('wc-cost-cruise-extras');
+    const cruise = getVal('wc-cost-cruise-cabin');
+    const total = hotel + flights + food + cruise;
+    document.getElementById('wc-summary-hotel').textContent = fmt(hotel);
+    document.getElementById('wc-summary-flights').textContent = fmt(flights);
+    document.getElementById('wc-summary-food').textContent = fmt(food);
+    document.getElementById('wc-summary-cruise').textContent = fmt(cruise);
+    document.getElementById('wc-summary-total').textContent = fmt(total);
+    document.getElementById('wc-total-cost').textContent = fmt(total);
+  }
+  if (prefix === 'nc') {
+    const hotel = getVal('nc-cost-madrid-hotel') + getVal('nc-cost-bcn-hotel') + getVal('nc-cost-paris-hotel') + getVal('nc-cost-lisbon-hotel') + getVal('nc-cost-algarve-hotel');
+    const flights = getVal('nc-cost-madrid-flight') + getVal('nc-cost-bcn-train') + getVal('nc-cost-paris-flight') + getVal('nc-cost-lisbon-flight') + getVal('nc-cost-algarve-bus');
+    const food = getVal('nc-cost-madrid-food') + getVal('nc-cost-bcn-food') + getVal('nc-cost-paris-food') + getVal('nc-cost-lisbon-food') + getVal('nc-cost-rome-food');
+    const flights2 = flights + getVal('nc-cost-rome-flight');
+    const hotel2 = hotel + getVal('nc-cost-rome-hotel');
+    const total = hotel2 + flights2 + food;
+    document.getElementById('nc-summary-hotel').textContent = fmt(hotel2);
+    document.getElementById('nc-summary-flights').textContent = fmt(flights2);
+    document.getElementById('nc-summary-food').textContent = fmt(food);
+    document.getElementById('nc-summary-total').textContent = fmt(total);
+    document.getElementById('nc-total-cost').textContent = fmt(total);
+  }
+  if (prefix === 'mx') {
+    const hotel = getVal('mx-cost-madrid-hotel') + getVal('mx-cost-sevilla-hotel') + getVal('mx-cost-porto-hotel') + getVal('mx-cost-paris-hotel') + getVal('mx-cost-ams-hotel') + getVal('mx-cost-lisbon-hotel') + getVal('mx-cost-rome-hotel') + getVal('mx-cost-florence-hotel');
+    const flights = getVal('mx-cost-madrid-flight') + getVal('mx-cost-sevilla-train') + getVal('mx-cost-porto-bus') + getVal('mx-cost-paris-flight') + getVal('mx-cost-ams-train') + getVal('mx-cost-lisbon-flight') + getVal('mx-cost-rome-flight') + getVal('mx-cost-florence-train');
+    const food = getVal('mx-cost-madrid-food') + getVal('mx-cost-sevilla-food') + getVal('mx-cost-porto-food') + getVal('mx-cost-paris-food') + getVal('mx-cost-ams-food') + getVal('mx-cost-lisbon-food') + getVal('mx-cost-rome-food');
+    const total = hotel + flights + food;
+    document.getElementById('mx-summary-hotel').textContent = fmt(hotel);
+    document.getElementById('mx-summary-flights').textContent = fmt(flights);
+    document.getElementById('mx-summary-food').textContent = fmt(food);
+    document.getElementById('mx-summary-total').textContent = fmt(total);
+    document.getElementById('mx-total-cost').textContent = fmt(total);
+  }
+}
+
+// ===================== EXPENSE TRACKER =====================
+function toggleAddForm() {
+  const form = document.getElementById('add-form');
+  form.classList.toggle('open');
+  if (form.classList.contains('open')) {
+    document.getElementById('exp-date').value = new Date().toISOString().split('T')[0];
+    selectedPayers = [];
+    selectedForWhom = ['Barbi','Ale','Thai'];
+    document.querySelectorAll('#for-whom .payer-toggle').forEach(b => b.classList.add('selected'));
+    document.querySelectorAll('.payers-grid:not(#for-whom) .payer-toggle').forEach(b => b.classList.remove('selected'));
+  }
+}
+
+function togglePayer(btn) {
+  const name = btn.dataset.name;
+  btn.classList.toggle('selected');
+  if (btn.classList.contains('selected')) {
+    if (!selectedPayers.includes(name)) selectedPayers.push(name);
+  } else {
+    selectedPayers = selectedPayers.filter(p => p !== name);
+  }
+}
+
+function toggleForWhom(btn) {
+  const name = btn.dataset.name;
+  btn.classList.toggle('selected');
+  if (btn.classList.contains('selected')) {
+    if (!selectedForWhom.includes(name)) selectedForWhom.push(name);
+  } else {
+    selectedForWhom = selectedForWhom.filter(p => p !== name);
+  }
+}
+
+function saveExpense() {
+  const desc = document.getElementById('exp-desc').value.trim();
+  const amount = parseFloat(document.getElementById('exp-amount').value);
+  const category = document.getElementById('exp-category').value;
+  const location = document.getElementById('exp-location').value.trim();
+  const date = document.getElementById('exp-date').value;
+
+  if (!desc || !amount || amount <= 0) { alert('Por favor ingresa descripción y monto.'); return; }
+  if (selectedPayers.length === 0) { alert('Selecciona quién pagó.'); return; }
+  if (selectedForWhom.length === 0) { alert('Selecciona para quién aplica.'); return; }
+
+  const expense = {
+    id: Date.now(),
+    desc, amount, category, location, date,
+    paidBy: selectedPayers,
+    forWhom: selectedForWhom,
+    perPerson: amount / selectedForWhom.length
+  };
+
+  expenses.push(expense);
+  saveData();
+  renderExpenses();
+  toggleAddForm();
+  document.getElementById('exp-desc').value = '';
+  document.getElementById('exp-amount').value = '';
+  document.getElementById('exp-location').value = '';
+}
+
+function deleteExpense(id) {
+  expenses = expenses.filter(e => e.id !== id);
+  saveData();
+  renderExpenses();
+}
+
+function saveData() {
+  try { localStorage.setItem('europa2026expenses', JSON.stringify(expenses)); } catch(e) {}
+}
+
+function filterExpenses(cat) {
+  currentFilter = cat;
+  document.getElementById('filter-all').style.background = cat === 'all' ? 'var(--ink)' : 'var(--white)';
+  document.getElementById('filter-all').style.color = cat === 'all' ? 'white' : 'var(--ink)';
+  renderExpenses();
+}
+
+const catEmoji = { alojamiento:'🏨', transporte:'✈️', comida:'🍽️', actividad:'🎭', crucero:'🚢', otro:'📦' };
+
+function renderExpenses() {
+  const tbody = document.getElementById('expense-tbody');
+  const filtered = currentFilter === 'all' ? expenses : expenses.filter(e => e.category === currentFilter);
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr id="empty-row"><td colspan="9"><div class="empty-state"><div class="icon">🧳</div><p>${expenses.length === 0 ? 'Aún no hay gastos registrados.<br>¡Agrega el primero!' : 'No hay gastos en esta categoría.'}</p></div></td></tr>`;
+  } else {
+    tbody.innerHTML = filtered.map(e => `
+      <tr>
+        <td style="font-weight:500">${e.desc}</td>
+        <td><span class="cat-badge cat-${e.category}">${catEmoji[e.category] || '📦'} ${e.category}</span></td>
+        <td style="color:var(--muted); font-size:13px">${e.location || '—'}</td>
+        <td style="color:var(--muted); font-size:13px; font-family:'DM Mono',monospace">${e.date || '—'}</td>
+        <td>${e.paidBy.map(p => `<span class="payer-chip chip-${p}">${p}</span>`).join('')}</td>
+        <td>${e.forWhom.map(p => `<span class="payer-chip chip-${p}">${p}</span>`).join('')}</td>
+        <td style="text-align:right; font-family:'DM Mono',monospace; font-weight:600">$${e.amount.toFixed(2)}</td>
+        <td style="text-align:right; font-family:'DM Mono',monospace; color:var(--terracotta)">$${e.perPerson.toFixed(2)}</td>
+        <td><button class="del-btn" onclick="deleteExpense(${e.id})">✕</button></td>
+      </tr>
+    `).join('');
+  }
+
+  calcBalances();
+}
+
+function calcBalances() {
+  const people = ['Barbi', 'Ale', 'Thai'];
+  const paid = { Barbi: 0, Ale: 0, Thai: 0 };
+  const owes = { Barbi: 0, Ale: 0, Thai: 0 };
+
+  expenses.forEach(e => {
+    const share = e.amount / e.forWhom.length;
+    e.paidBy.forEach(p => { paid[p] += e.amount / e.paidBy.length; });
+    e.forWhom.forEach(p => { owes[p] += share; });
+  });
+
+  const balance = {};
+  people.forEach(p => { balance[p] = paid[p] - owes[p]; });
+
+  const total = expenses.reduce((s, e) => s + e.amount, 0);
+  document.getElementById('grand-total').textContent = '$' + total.toFixed(2);
+  document.getElementById('per-person-total').textContent = '$' + (total / 3).toFixed(2);
+
+  people.forEach(p => {
+    const lp = p.toLowerCase();
+    document.getElementById(`${lp}-paid`).textContent = `Ha pagado: $${paid[p].toFixed(2)}`;
+    const balEl = document.getElementById(`${lp}-balance`);
+    const lblEl = document.getElementById(`${lp}-balance-label`);
+    const b = balance[p];
+    balEl.textContent = (b >= 0 ? '+' : '') + '$' + b.toFixed(2);
+    balEl.className = 'balance-total ' + (b >= 0 ? 'positive' : 'negative');
+    lblEl.textContent = b > 0 ? '→ le deben' : b < 0 ? '← debe' : 'Al día ✓';
+  });
+
+  // Settlements
+  const settlList = document.getElementById('settlements-list');
+  const debts = people.map(p => ({ name: p, balance: balance[p] }));
+  const settlements = [];
+  const pos = debts.filter(d => d.balance > 0.01).sort((a,b) => b.balance - a.balance);
+  const neg = debts.filter(d => d.balance < -0.01).sort((a,b) => a.balance - b.balance);
+
+  let pi = 0, ni = 0;
+  const posC = pos.map(d => ({...d}));
+  const negC = neg.map(d => ({...d}));
+
+  while (pi < posC.length && ni < negC.length) {
+    const creditor = posC[pi], debtor = negC[ni];
+    const amt = Math.min(creditor.balance, -debtor.balance);
+    settlements.push({ from: debtor.name, to: creditor.name, amount: amt });
+    creditor.balance -= amt;
+    debtor.balance += amt;
+    if (Math.abs(creditor.balance) < 0.01) pi++;
+    if (Math.abs(debtor.balance) < 0.01) ni++;
+  }
+
+  if (settlements.length === 0) {
+    settlList.innerHTML = `<div class="settlement-row" style="opacity:0.6">${expenses.length === 0 ? 'Agrega gastos para ver los balances...' : '✅ ¡Todas están al día! No hay deudas.'}</div>`;
+  } else {
+    settlList.innerHTML = settlements.map(s => `
+      <div class="settlement-row">
+        <span class="payer-chip chip-${s.from}">${s.from}</span>
+        <span class="arrow">→</span>
+        <span class="payer-chip chip-${s.to}">${s.to}</span>
+        <span style="flex:1"></span>
+        <span class="settlement-amount">$${s.amount.toFixed(2)}</span>
+      </div>
+    `).join('');
+  }
+}
+
+function exportCSV() {
+  if (expenses.length === 0) { alert('No hay gastos para exportar.'); return; }
+  const header = 'Descripción,Categoría,Lugar,Fecha,Pagó,Para quién,Total,Por persona\n';
+  const rows = expenses.map(e =>
+    `"${e.desc}","${e.category}","${e.location}","${e.date}","${e.paidBy.join('+')}","${e.forWhom.join('+')}","${e.amount.toFixed(2)}","${e.perPerson.toFixed(2)}"`
+  ).join('\n');
+  const blob = new Blob([header + rows], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url;
+  a.download = 'europa2026_gastos.csv'; a.click();
+}
+
+// ===================== DATE UPDATERS =====================
+function addDays(date, days) {
+  const d = new Date(date); d.setDate(d.getDate() + days); return d;
+}
+function fmtDate(d) {
+  const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  return `${d.getDate()} ${months[d.getMonth()]}`;
+}
+
+function updateDatesWC() {
+  const start = new Date(document.getElementById('wc-start-date').value + 'T12:00:00');
+  const segs = [
+    { id:'wc-dates-madrid', nights:3 },
+    { id:'wc-dates-bcn', nights:3 },
+    { id:'wc-dates-paris', nights:3 },
+    { id:'wc-dates-lisbon', nights:5 },
+    { id:'wc-dates-cruise', nights:7 },
+  ];
+  let cur = start;
+  segs.forEach(s => {
+    const end = addDays(cur, s.nights);
+    document.getElementById(s.id).textContent = `${fmtDate(cur)} — ${fmtDate(end)}`;
+    cur = end;
+  });
+}
+
+function updateDatesNC() {
+  const start = new Date(document.getElementById('nc-start-date').value + 'T12:00:00');
+  const segs = [
+    { id:'nc-dates-madrid', nights:3 },
+    { id:'nc-dates-bcn', nights:3 },
+    { id:'nc-dates-paris', nights:3 },
+    { id:'nc-dates-rome', nights:3 },
+    { id:'nc-dates-lisbon', nights:9 },
+  ];
+  let cur = start;
+  segs.forEach(s => {
+    const end = addDays(cur, s.nights);
+    document.getElementById(s.id).textContent = `${fmtDate(cur)} — ${fmtDate(end)}`;
+    cur = end;
+  });
+}
+
+function updateDatesMX() {
+  const start = new Date(document.getElementById('mx-start-date').value + 'T12:00:00');
+  const segs = [
+    { id:'mx-dates-madrid', nights:2 },
+    { id:'mx-dates-sevilla', nights:2 },
+    { id:'mx-dates-porto', nights:2 },
+    { id:'mx-dates-paris', nights:3 },
+    { id:'mx-dates-ams', nights:2 },
+    { id:'mx-dates-lisbon', nights:5 },
+    { id:'mx-dates-rome', nights:5 },
+  ];
+  let cur = start;
+  segs.forEach(s => {
+    const end = addDays(cur, s.nights);
+    const el = document.getElementById(s.id);
+    if (el) el.textContent = `${fmtDate(cur)} — ${fmtDate(end)}`;
+    cur = end;
+  });
+}
+
+// ===================== INIT =====================
+renderExpenses();
+updateDatesWC();
+updateDatesNC();
+updateDatesMX();
+</script>
+</body>
+</html>
